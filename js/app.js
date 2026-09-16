@@ -1,13 +1,10 @@
-```javascript
 // app.js
-// Aplicación principal de Biblia RVR60
-// Aplicación completamente independiente.
+// Aplicación principal de Biblia PWA
+// Esta aplicación es completamente independiente.
 
-// =====================================================
-// ESTADO
-// =====================================================
 
 const state = {
+
     view: 'reader',
 
     bookIndex: 42,
@@ -29,11 +26,12 @@ const state = {
     showNumbers: true,
 
     darkMode: false
+
 };
 
 
 // =====================================================
-// ALMACENAMIENTO
+// ALMACENAMIENTO LOCAL
 // =====================================================
 
 const STORAGE = {
@@ -159,13 +157,10 @@ function loadLocalData() {
 function saveFavorites() {
 
     localStorage.setItem(
-
         STORAGE.favorites,
-
         JSON.stringify(
             state.favorites
         )
-
     );
 
 }
@@ -174,13 +169,10 @@ function saveFavorites() {
 function saveNotes() {
 
     localStorage.setItem(
-
         STORAGE.notes,
-
         JSON.stringify(
             state.notes
         )
-
     );
 
 }
@@ -189,13 +181,10 @@ function saveNotes() {
 function saveHistory() {
 
     localStorage.setItem(
-
         STORAGE.history,
-
         JSON.stringify(
             state.history
         )
-
     );
 
 }
@@ -204,9 +193,7 @@ function saveHistory() {
 function saveSettings() {
 
     localStorage.setItem(
-
         STORAGE.settings,
-
         JSON.stringify({
 
             showNumbers:
@@ -216,7 +203,6 @@ function saveSettings() {
                 state.darkMode
 
         })
-
     );
 
 }
@@ -229,11 +215,8 @@ function saveSettings() {
 function applySettings() {
 
     document.body.classList.toggle(
-
         'dark-mode',
-
         state.darkMode
-
     );
 
 }
@@ -278,7 +261,6 @@ async function initializeBible() {
 
     const success =
         await bible.load(
-
             message => {
 
                 const loadingMessage =
@@ -295,7 +277,6 @@ async function initializeBible() {
                 }
 
             }
-
         );
 
 
@@ -324,11 +305,18 @@ async function initializeBible() {
                         carpeta principal.
                     </p>
 
+                    <p>
+                        También debes abrir la
+                        aplicación mediante un
+                        servidor local.
+                    </p>
+
                     <button
                         class="primary-button"
-                        onclick="location.reload()"
-                    >
+                        onclick="location.reload()">
+
                         Reintentar
+
                     </button>
 
                 </div>
@@ -342,20 +330,15 @@ async function initializeBible() {
     }
 
 
-    // =================================================
-    // BUSCAR JUAN COMO CAPÍTULO INICIAL
-    // =================================================
+    // Buscar Juan como capítulo inicial
 
     const juanIndex =
         bible.data.findIndex(
-
             book =>
                 book &&
                 book.name &&
-                book.name
-                    .toLowerCase() ===
+                book.name.toLowerCase() ===
                 'juan'
-
         );
 
 
@@ -371,10 +354,7 @@ async function initializeBible() {
             );
 
 
-        // CORRECCIÓN:
-        // El paréntesis del if estaba incompleto.
-
-        if (
+                if (
             book &&
             Array.isArray(
                 book.chapters
@@ -412,9 +392,7 @@ async function initializeBible() {
 function setupGlobalEvents() {
 
     document.addEventListener(
-
         'click',
-
         event => {
 
             const viewButton =
@@ -447,7 +425,6 @@ function setupGlobalEvents() {
             }
 
         }
-
     );
 
 
@@ -476,9 +453,7 @@ function setupGlobalEvents() {
     if (searchButton) {
 
         searchButton.addEventListener(
-
             'click',
-
             () => {
 
                 changeView(
@@ -487,7 +462,6 @@ function setupGlobalEvents() {
 
 
                 setTimeout(
-
                     () => {
 
                         const input =
@@ -503,13 +477,10 @@ function setupGlobalEvents() {
                         }
 
                     },
-
                     100
-
                 );
 
             }
-
         );
 
     }
@@ -735,22 +706,15 @@ function updateNavigation() {
         .querySelectorAll(
             '[data-view]'
         )
-        .forEach(
+        .forEach(button => {
 
-            button => {
+            button.classList.toggle(
+                'active',
+                button.dataset.view ===
+                state.view
+            );
 
-                button.classList.toggle(
-
-                    'active',
-
-                    button.dataset.view ===
-                    state.view
-
-                );
-
-            }
-
-        );
+        });
 
 }
 
@@ -788,37 +752,27 @@ function renderReader(content) {
 
     const chapter =
         bible.getChapter(
-
             state.bookIndex,
-
             state.chapterIndex
-
         );
 
 
     state.selectedVerses =
         state.selectedVerses.filter(
-
             index =>
                 index >= 0 &&
                 index < chapter.length
-
         );
 
 
     const isFavoriteChapter =
         state.favorites.some(
-
             item =>
-
                 item.type === 'chapter' &&
-
                 item.bookIndex ===
                     state.bookIndex &&
-
                 item.chapterIndex ===
                     state.chapterIndex
-
         );
 
 
@@ -840,34 +794,29 @@ function renderReader(content) {
 
                             ${
                                 bible.data
-
                                     .map(
-
                                         (
                                             item,
                                             index
                                         ) => `
 
-                                            <option
-                                                value="${index}"
-                                                ${
-                                                    index ===
-                                                    state.bookIndex
-                                                        ? 'selected'
-                                                        : ''
-                                                }
-                                            >
-                                                ${escapeHtml(
-                                                    item.name
-                                                )}
-                                            </option>
+                                        <option
+                                            value="${index}"
+                                            ${
+                                                index ===
+                                                state.bookIndex
+                                                    ? 'selected'
+                                                    : ''
+                                            }
+                                        >
+                                            ${escapeHtml(
+                                                item.name
+                                            )}
+                                        </option>
 
-                                        `
-
+                                    `
                                     )
-
                                     .join('')
-
                             }
 
                         </select>
@@ -887,32 +836,27 @@ function renderReader(content) {
 
                             ${
                                 book.chapters
-
                                     .map(
-
                                         (
                                             _,
                                             index
                                         ) => `
 
-                                            <option
-                                                value="${index}"
-                                                ${
-                                                    index ===
-                                                    state.chapterIndex
-                                                        ? 'selected'
-                                                        : ''
-                                                }
-                                            >
-                                                ${index + 1}
-                                            </option>
+                                        <option
+                                            value="${index}"
+                                            ${
+                                                index ===
+                                                state.chapterIndex
+                                                    ? 'selected'
+                                                    : ''
+                                            }
+                                        >
+                                            ${index + 1}
+                                        </option>
 
-                                        `
-
+                                    `
                                     )
-
                                     .join('')
-
                             }
 
                         </select>
@@ -939,7 +883,6 @@ function renderReader(content) {
                         <p>
 
                             ${chapter.length}
-
                             versículos
 
                         </p>
@@ -970,25 +913,18 @@ function renderReader(content) {
 
                 ${
                     chapter.length
-
                         ? chapter
-
-                            .map(
-
-                                (
-                                    verse,
-                                    index
-                                ) =>
-
-                                    renderVerse(
-                                        verse,
-                                        index
-                                    )
-
-                            )
-
-                            .join('')
-
+                              .map(
+                                  (
+                                      verse,
+                                      index
+                                  ) =>
+                                      renderVerse(
+                                          verse,
+                                          index
+                                      )
+                              )
+                              .join('')
                         : `
 
                             <div class="empty-card">
@@ -999,7 +935,6 @@ function renderReader(content) {
                             </div>
 
                         `
-
                 }
 
             </div>
@@ -1007,9 +942,7 @@ function renderReader(content) {
 
             ${
                 state.selectedVerses.length
-
                     ? renderSelectionPanel()
-
                     : ''
             }
 
@@ -1074,7 +1007,6 @@ function renderVerse(
 
             ${
                 state.showNumbers
-
                     ? `
 
                         <span class="verse-number">
@@ -1084,9 +1016,7 @@ function renderVerse(
                         </span>
 
                     `
-
                     : ''
-
             }
 
 
@@ -1125,9 +1055,7 @@ function renderSelectionPanel() {
 
                     ${
                         count === 1
-
                             ? 'versículo seleccionado'
-
                             : 'versículos seleccionados'
                     }
 
@@ -1237,9 +1165,7 @@ function bindReaderEvents() {
     if (bookSelect) {
 
         bookSelect.addEventListener(
-
             'change',
-
             () => {
 
                 state.bookIndex =
@@ -1257,7 +1183,6 @@ function bindReaderEvents() {
                 render();
 
             }
-
         );
 
     }
@@ -1272,9 +1197,7 @@ function bindReaderEvents() {
     if (chapterSelect) {
 
         chapterSelect.addEventListener(
-
             'change',
-
             () => {
 
                 state.chapterIndex =
@@ -1290,7 +1213,6 @@ function bindReaderEvents() {
                 render();
 
             }
-
         );
 
     }
@@ -1301,13 +1223,10 @@ function bindReaderEvents() {
             '.verse[data-verse]'
         )
         .forEach(
-
             verseElement => {
 
                 verseElement.addEventListener(
-
                     'click',
-
                     () => {
 
                         const index =
@@ -1323,11 +1242,9 @@ function bindReaderEvents() {
                         );
 
                     }
-
                 );
 
             }
-
         );
 
 
@@ -1372,11 +1289,8 @@ function bindReaderEvents() {
     if (favoriteChapter) {
 
         favoriteChapter.addEventListener(
-
             'click',
-
             favoriteCurrentChapter
-
         );
 
     }
@@ -1388,39 +1302,703 @@ function bindReaderEvents() {
 
 
 // =====================================================
-// SELECCIÓN DE VERSÍCULOS
+// SELECCIONAR VERSÍCULO
 // =====================================================
 
-function toggleVerseSelection(index) {
+function toggleVerseSelection(
+    index
+) {
 
-    const position =
-        state.selectedVerses.indexOf(
+    if (
+        state.selectedVerses.includes(
             index
-        );
+        )
+    ) {
 
+        state.selectedVerses =
+            state.selectedVerses.filter(
+                item =>
+                    item !== index
+            );
 
-    if (position === -1) {
+    } else {
 
         state.selectedVerses.push(
             index
         );
 
-    } else {
 
-        state.selectedVerses.splice(
-            position,
-            1
+        state.selectedVerses.sort(
+            (a, b) => a - b
         );
 
     }
 
 
-    state.selectedVerses.sort(
-        (a, b) => a - b
+    render();
+
+}
+
+
+// =====================================================
+// CAPÍTULO ANTERIOR
+// =====================================================
+
+function previousChapter() {
+
+    if (
+        state.chapterIndex > 0
+    ) {
+
+        state.chapterIndex--;
+
+    } else if (
+        state.bookIndex > 0
+    ) {
+
+        state.bookIndex--;
+
+        const book =
+            bible.getBook(
+                state.bookIndex
+            );
+
+
+        state.chapterIndex =
+            Math.max(
+                0,
+                book.chapters.length - 1
+            );
+
+    } else {
+
+        toast(
+            'Ya estás en el primer capítulo de la Biblia.'
+        );
+
+        return;
+
+    }
+
+
+    state.selectedVerses = [];
+
+    addHistory();
+
+    render();
+
+}
+
+
+// =====================================================
+// CAPÍTULO SIGUIENTE
+// =====================================================
+
+function nextChapter() {
+
+    const book =
+        bible.getBook(
+            state.bookIndex
+        );
+
+
+    if (
+        state.chapterIndex <
+        book.chapters.length - 1
+    ) {
+
+        state.chapterIndex++;
+
+    } else if (
+        state.bookIndex <
+        bible.data.length - 1
+    ) {
+
+        state.bookIndex++;
+
+        state.chapterIndex = 0;
+
+    } else {
+
+        toast(
+            'Ya estás en el último capítulo de la Biblia.'
+        );
+
+        return;
+
+    }
+
+
+    state.selectedVerses = [];
+
+    addHistory();
+
+    render();
+
+}
+
+
+// =====================================================
+// HISTORIAL
+// =====================================================
+
+function addHistory() {
+
+    const book =
+        bible.getBook(
+            state.bookIndex
+        );
+
+
+    if (!book) {
+
+        return;
+
+    }
+
+
+    const item = {
+
+        bookIndex:
+            state.bookIndex,
+
+        chapterIndex:
+            state.chapterIndex,
+
+        reference:
+            `${book.name} ${
+                state.chapterIndex + 1
+            }`,
+
+        date:
+            new Date().toISOString()
+
+    };
+
+
+    state.history =
+        state.history.filter(
+            old =>
+                !(
+                    old.bookIndex ===
+                        item.bookIndex &&
+                    old.chapterIndex ===
+                        item.chapterIndex
+                )
+        );
+
+
+    state.history.unshift(
+        item
     );
 
 
+    state.history =
+        state.history.slice(
+            0,
+            50
+        );
+
+
+    saveHistory();
+
+}
+
+
+// =====================================================
+// FAVORITO DE VERSÍCULOS
+// =====================================================
+
+function favoriteSelected() {
+
+    if (
+        !state.selectedVerses.length
+    ) {
+
+        return;
+
+    }
+
+
+    const start =
+        Math.min(
+            ...state.selectedVerses
+        );
+
+
+    const end =
+        Math.max(
+            ...state.selectedVerses
+        );
+
+
+    const payload =
+        bible.buildVersePayload(
+            state.bookIndex,
+            state.chapterIndex,
+            start,
+            end
+        );
+
+
+    if (!payload) {
+
+        return;
+
+    }
+
+
+    const exists =
+        state.favorites.some(
+            item =>
+                item.reference ===
+                payload.reference
+        );
+
+
+    if (exists) {
+
+        state.favorites =
+            state.favorites.filter(
+                item =>
+                    item.reference !==
+                    payload.reference
+            );
+
+
+        toast(
+            'Eliminado de favoritos.'
+        );
+
+    } else {
+
+        state.favorites.unshift({
+
+            type:
+                'verse',
+
+            bookIndex:
+                state.bookIndex,
+
+            chapterIndex:
+                state.chapterIndex,
+
+            verseStart:
+                start,
+
+            verseEnd:
+                end,
+
+            reference:
+                payload.reference,
+
+            text:
+                payload.text
+
+        });
+
+
+        toast(
+            'Agregado a favoritos.'
+        );
+
+    }
+
+
+    saveFavorites();
+
     render();
+
+}
+
+
+// =====================================================
+// FAVORITO DE CAPÍTULO
+// =====================================================
+
+function favoriteCurrentChapter() {
+
+    const book =
+        bible.getBook(
+            state.bookIndex
+        );
+
+
+    if (!book) {
+
+        return;
+
+    }
+
+
+    const reference =
+        `${book.name} ${
+            state.chapterIndex + 1
+        }`;
+
+
+    const exists =
+        state.favorites.some(
+            item =>
+                item.type === 'chapter' &&
+                item.bookIndex ===
+                    state.bookIndex &&
+                item.chapterIndex ===
+                    state.chapterIndex
+        );
+
+
+    if (exists) {
+
+        state.favorites =
+            state.favorites.filter(
+                item =>
+                    !(
+                        item.type ===
+                            'chapter' &&
+                        item.bookIndex ===
+                            state.bookIndex &&
+                        item.chapterIndex ===
+                            state.chapterIndex
+                    )
+            );
+
+
+        toast(
+            'Capítulo eliminado de favoritos.'
+        );
+
+    } else {
+
+        const chapter =
+            bible.getChapter(
+                state.bookIndex,
+                state.chapterIndex
+            );
+
+
+        state.favorites.unshift({
+
+            type:
+                'chapter',
+
+            bookIndex:
+                state.bookIndex,
+
+            chapterIndex:
+                state.chapterIndex,
+
+            reference,
+
+            text:
+                chapter.join('\n')
+
+        });
+
+
+        toast(
+            'Capítulo guardado en favoritos.'
+        );
+
+    }
+
+
+    saveFavorites();
+
+    render();
+
+}
+
+
+// =====================================================
+// NOTA
+// =====================================================
+
+function addNoteForSelection() {
+
+    if (
+        !state.selectedVerses.length
+    ) {
+
+        return;
+
+    }
+
+
+    const start =
+        Math.min(
+            ...state.selectedVerses
+        );
+
+
+    const end =
+        Math.max(
+            ...state.selectedVerses
+        );
+
+
+    const payload =
+        bible.buildVersePayload(
+            state.bookIndex,
+            state.chapterIndex,
+            start,
+            end
+        );
+
+
+    if (!payload) {
+
+        return;
+
+    }
+
+
+    const note =
+        prompt(
+            `Escribe tu nota para ${payload.reference}:`
+        );
+
+
+    if (
+        note === null ||
+        note.trim() === ''
+    ) {
+
+        return;
+
+    }
+
+
+    state.notes.unshift({
+
+        id:
+            Date.now(),
+
+        bookIndex:
+            state.bookIndex,
+
+        chapterIndex:
+            state.chapterIndex,
+
+        verseStart:
+            start,
+
+        verseEnd:
+            end,
+
+        reference:
+            payload.reference,
+
+        text:
+            payload.text,
+
+        note:
+            note.trim(),
+
+        date:
+            new Date().toISOString()
+
+    });
+
+
+    saveNotes();
+
+    toast(
+        'Nota guardada.'
+    );
+
+
+    state.selectedVerses = [];
+
+    render();
+
+}
+
+
+// =====================================================
+// COPIAR VERSÍCULO
+// =====================================================
+
+async function copySelected() {
+
+    const payload =
+        getSelectedPayload();
+
+
+    if (!payload) {
+
+        return;
+
+    }
+
+
+    const text =
+        `${payload.reference}\n${payload.text}`;
+
+
+    try {
+
+        await navigator.clipboard.writeText(
+            text
+        );
+
+
+        toast(
+            'Versículo copiado.'
+        );
+
+    } catch {
+
+        fallbackCopy(text);
+
+    }
+
+}
+
+
+// =====================================================
+// COMPARTIR
+// =====================================================
+
+async function shareSelected() {
+
+    const payload =
+        getSelectedPayload();
+
+
+    if (!payload) {
+
+        return;
+
+    }
+
+
+    const text =
+        `${payload.reference}\n${payload.text}`;
+
+
+    if (
+        navigator.share
+    ) {
+
+        try {
+
+            await navigator.share({
+
+                title:
+                    payload.reference,
+
+                text
+
+            });
+
+        } catch {
+
+            // El usuario canceló
+            // la ventana de compartir.
+
+        }
+
+    } else {
+
+        fallbackCopy(text);
+
+    }
+
+}
+
+
+// =====================================================
+// COPIAR SIN CLIPBOARD API
+// =====================================================
+
+function fallbackCopy(text) {
+
+    const textarea =
+        document.createElement(
+            'textarea'
+        );
+
+
+    textarea.value = text;
+
+    textarea.style.position =
+        'fixed';
+
+    textarea.style.opacity =
+        '0';
+
+
+    document.body.appendChild(
+        textarea
+    );
+
+
+    textarea.select();
+
+
+    try {
+
+        document.execCommand(
+            'copy'
+        );
+
+
+        toast(
+            'Texto copiado.'
+        );
+
+    } catch {
+
+        toast(
+            'No se pudo copiar el texto.'
+        );
+
+    }
+
+
+    textarea.remove();
+
+}
+
+
+// =====================================================
+// OBTENER SELECCIÓN
+// =====================================================
+
+function getSelectedPayload() {
+
+    if (
+        !state.selectedVerses.length
+    ) {
+
+        toast(
+            'Selecciona al menos un versículo.'
+        );
+
+        return null;
+
+    }
+
+
+    const start =
+        Math.min(
+            ...state.selectedVerses
+        );
+
+
+    const end =
+        Math.max(
+            ...state.selectedVerses
+        );
+
+
+    return bible.buildVersePayload(
+        state.bookIndex,
+        state.chapterIndex,
+        start,
+        end
+    );
 
 }
 
@@ -1504,9 +2082,7 @@ function bindSelectionEvents() {
     if (clear) {
 
         clear.addEventListener(
-
             'click',
-
             () => {
 
                 state.selectedVerses = [];
@@ -1514,583 +2090,9 @@ function bindSelectionEvents() {
                 render();
 
             }
-
         );
 
     }
-
-}
-
-
-// =====================================================
-// CAPÍTULO ANTERIOR
-// =====================================================
-
-function previousChapter() {
-
-    if (
-        state.chapterIndex > 0
-    ) {
-
-        state.chapterIndex--;
-
-    } else if (
-        state.bookIndex > 0
-    ) {
-
-        state.bookIndex--;
-
-        const previousBook =
-            bible.getBook(
-                state.bookIndex
-            );
-
-
-        if (
-            previousBook &&
-            Array.isArray(
-                previousBook.chapters
-            ) &&
-            previousBook.chapters.length
-        ) {
-
-            state.chapterIndex =
-                previousBook.chapters.length - 1;
-
-        } else {
-
-            state.chapterIndex = 0;
-
-        }
-
-    }
-
-
-    state.selectedVerses = [];
-
-    addHistory();
-
-    render();
-
-}
-
-
-// =====================================================
-// CAPÍTULO SIGUIENTE
-// =====================================================
-
-function nextChapter() {
-
-    const book =
-        bible.getBook(
-            state.bookIndex
-        );
-
-
-    if (!book) {
-
-        return;
-
-    }
-
-
-    if (
-        state.chapterIndex <
-        book.chapters.length - 1
-    ) {
-
-        state.chapterIndex++;
-
-    } else if (
-        state.bookIndex <
-        bible.data.length - 1
-    ) {
-
-        state.bookIndex++;
-
-        state.chapterIndex = 0;
-
-    }
-
-
-    state.selectedVerses = [];
-
-    addHistory();
-
-    render();
-
-}
-
-
-// =====================================================
-// FAVORITO DEL CAPÍTULO
-// =====================================================
-
-function favoriteCurrentChapter() {
-
-    const existing =
-        state.favorites.findIndex(
-
-            item =>
-
-                item.type === 'chapter' &&
-
-                item.bookIndex ===
-                    state.bookIndex &&
-
-                item.chapterIndex ===
-                    state.chapterIndex
-
-        );
-
-
-    if (existing !== -1) {
-
-        state.favorites.splice(
-            existing,
-            1
-        );
-
-        toast(
-            'Capítulo eliminado de favoritos'
-        );
-
-    } else {
-
-        const book =
-            bible.getBook(
-                state.bookIndex
-            );
-
-
-        state.favorites.push({
-
-            type: 'chapter',
-
-            bookIndex:
-                state.bookIndex,
-
-            chapterIndex:
-                state.chapterIndex,
-
-            reference:
-                `${book.name} ${state.chapterIndex + 1}`,
-
-            date:
-                new Date().toISOString()
-
-        });
-
-
-        toast(
-            'Capítulo guardado en favoritos'
-        );
-
-    }
-
-
-    saveFavorites();
-
-    render();
-
-}
-
-
-// =====================================================
-// FAVORITOS DE VERSÍCULOS
-// =====================================================
-
-function favoriteSelected() {
-
-    if (
-        !state.selectedVerses.length
-    ) {
-
-        return;
-
-    }
-
-
-    const start =
-        Math.min(
-            ...state.selectedVerses
-        );
-
-
-    const end =
-        Math.max(
-            ...state.selectedVerses
-        );
-
-
-    const payload =
-        bible.buildVersePayload(
-
-            state.bookIndex,
-
-            state.chapterIndex,
-
-            start,
-
-            end
-
-        );
-
-
-    const exists =
-        state.favorites.some(
-
-            item =>
-
-                item.type === 'verse' &&
-
-                item.reference ===
-                    payload.reference
-
-        );
-
-
-    if (exists) {
-
-        toast(
-            'Ya está guardado en favoritos'
-        );
-
-        return;
-
-    }
-
-
-    state.favorites.push({
-
-        type: 'verse',
-
-        bookIndex:
-            state.bookIndex,
-
-        chapterIndex:
-            state.chapterIndex,
-
-        startVerse:
-            start,
-
-        endVerse:
-            end,
-
-        reference:
-            payload.reference,
-
-        text:
-            payload.text,
-
-        date:
-            new Date().toISOString()
-
-    });
-
-
-    saveFavorites();
-
-    toast(
-        'Versículo guardado en favoritos'
-    );
-
-}
-
-
-// =====================================================
-// NOTA
-// =====================================================
-
-function addNoteForSelection() {
-
-    if (
-        !state.selectedVerses.length
-    ) {
-
-        return;
-
-    }
-
-
-    const noteText =
-        prompt(
-            'Escribe tu nota:'
-        );
-
-
-    if (
-        !noteText ||
-        !noteText.trim()
-    ) {
-
-        return;
-
-    }
-
-
-    const start =
-        Math.min(
-            ...state.selectedVerses
-        );
-
-
-    const end =
-        Math.max(
-            ...state.selectedVerses
-        );
-
-
-    const payload =
-        bible.buildVersePayload(
-
-            state.bookIndex,
-
-            state.chapterIndex,
-
-            start,
-
-            end
-
-        );
-
-
-    state.notes.push({
-
-        id:
-            Date.now(),
-
-        bookIndex:
-            state.bookIndex,
-
-        chapterIndex:
-            state.chapterIndex,
-
-        startVerse:
-            start,
-
-        endVerse:
-            end,
-
-        reference:
-            payload.reference,
-
-        text:
-            payload.text,
-
-        note:
-            noteText.trim(),
-
-        date:
-            new Date().toISOString()
-
-    });
-
-
-    saveNotes();
-
-    toast(
-        'Nota guardada'
-    );
-
-}
-
-
-// =====================================================
-// COPIAR
-// =====================================================
-
-async function copySelected() {
-
-    if (
-        !state.selectedVerses.length
-    ) {
-
-        return;
-
-    }
-
-
-    const start =
-        Math.min(
-            ...state.selectedVerses
-        );
-
-
-    const end =
-        Math.max(
-            ...state.selectedVerses
-        );
-
-
-    const payload =
-        bible.buildVersePayload(
-
-            state.bookIndex,
-
-            state.chapterIndex,
-
-            start,
-
-            end
-
-        );
-
-
-    const text =
-        `${payload.reference}\n${payload.text}`;
-
-
-    try {
-
-        if (
-            navigator.clipboard &&
-            navigator.clipboard.writeText
-        ) {
-
-            await navigator.clipboard.writeText(
-                text
-            );
-
-        } else {
-
-            copyFallback(text);
-
-        }
-
-
-        toast(
-            'Texto copiado'
-        );
-
-    } catch {
-
-        copyFallback(text);
-
-        toast(
-            'Texto copiado'
-        );
-
-    }
-
-}
-
-
-// =====================================================
-// COMPARTIR
-// =====================================================
-
-async function shareSelected() {
-
-    if (
-        !state.selectedVerses.length
-    ) {
-
-        return;
-
-    }
-
-
-    const start =
-        Math.min(
-            ...state.selectedVerses
-        );
-
-
-    const end =
-        Math.max(
-            ...state.selectedVerses
-        );
-
-
-    const payload =
-        bible.buildVersePayload(
-
-            state.bookIndex,
-
-            state.chapterIndex,
-
-            start,
-
-            end
-
-        );
-
-
-    const text =
-        `${payload.reference}\n${payload.text}`;
-
-
-    if (
-        navigator.share
-    ) {
-
-        try {
-
-            await navigator.share({
-
-                title:
-                    payload.reference,
-
-                text:
-                    text
-
-            });
-
-        } catch {
-
-            // El usuario canceló el diálogo.
-
-        }
-
-        return;
-
-    }
-
-
-    copyFallback(text);
-
-    toast(
-        'Compartir no está disponible. Texto copiado.'
-    );
-
-}
-
-
-// =====================================================
-// COPIA DE RESPALDO
-// =====================================================
-
-function copyFallback(text) {
-
-    const textarea =
-        document.createElement(
-            'textarea'
-        );
-
-
-    textarea.value = text;
-
-    textarea.style.position =
-        'fixed';
-
-    textarea.style.left =
-        '-9999px';
-
-
-    document.body.appendChild(
-        textarea
-    );
-
-
-    textarea.select();
-
-    document.execCommand(
-        'copy'
-    );
-
-
-    textarea.remove();
 
 }
 
@@ -2103,7 +2105,11 @@ function renderSearch(content) {
 
     content.innerHTML = `
 
-        <section class="search-view">
+        <section>
+
+            <h1>
+                Buscar
+            </h1>
 
             <div class="search-box">
 
@@ -2114,13 +2120,16 @@ function renderSearch(content) {
                     value="${escapeHtml(
                         state.searchQuery
                     )}"
-                >
+                />
+
 
                 <button
                     id="searchButton"
-                    class="primary-button"
+                    title="Buscar"
                 >
-                    Buscar
+
+                    🔍
+
                 </button>
 
             </div>
@@ -2132,18 +2141,25 @@ function renderSearch(content) {
                     state.searchQuery
                         ? renderSearchResults()
                         : `
+
                             <div class="empty-card">
+
+                                <div style="font-size:40px;">
+                                    🔎
+                                </div>
 
                                 <h2>
                                     Buscar en la Biblia
                                 </h2>
 
                                 <p>
-                                    Escribe una palabra,
-                                    frase o referencia.
+                                    Escribe una palabra
+                                    o frase para buscar
+                                    entre los versículos.
                                 </p>
 
                             </div>
+
                         `
                 }
 
@@ -2166,40 +2182,85 @@ function renderSearch(content) {
         );
 
 
-    if (button) {
-
-        button.addEventListener(
-            'click',
-            performSearch
-        );
-
-    }
-
-
     if (input) {
 
         input.addEventListener(
-
             'keydown',
-
             event => {
 
                 if (
                     event.key === 'Enter'
                 ) {
 
-                    performSearch();
+                    performSearch(
+                        input.value
+                    );
 
                 }
 
             }
-
         );
 
     }
 
 
-    bindSearchResults();
+    if (button) {
+
+        button.addEventListener(
+            'click',
+            () => {
+
+                performSearch(
+                    input.value
+                );
+
+            }
+        );
+
+    }
+
+
+    document
+        .querySelectorAll(
+            '[data-search-book]'
+        )
+        .forEach(
+            element => {
+
+                element.addEventListener(
+                    'click',
+                    () => {
+
+                        state.bookIndex =
+                            Number(
+                                element.dataset
+                                    .searchBook
+                            );
+
+
+                        state.chapterIndex =
+                            Number(
+                                element.dataset
+                                    .searchChapter
+                            );
+
+
+                        state.selectedVerses = [];
+
+
+                        state.view =
+                            'reader';
+
+
+                        addHistory();
+
+                        render();
+
+                    }
+                );
+
+            }
+        );
 
 }
 
@@ -2208,33 +2269,17 @@ function renderSearch(content) {
 // REALIZAR BÚSQUEDA
 // =====================================================
 
-function performSearch() {
-
-    const input =
-        document.getElementById(
-            'searchInput'
-        );
-
-
-    if (!input) {
-
-        return;
-
-    }
-
-
-    const query =
-        input.value.trim();
-
+function performSearch(
+    query
+) {
 
     state.searchQuery =
-        query;
+        query.trim();
 
 
-    state.searchResults = [];
+    if (!state.searchQuery) {
 
-
-    if (!query) {
+        state.searchResults = [];
 
         render();
 
@@ -2243,8 +2288,15 @@ function performSearch() {
     }
 
 
-    const normalizedQuery =
-        normalizeText(query);
+    const search =
+        normalizeText(
+            state.searchQuery
+        );
+
+
+    const results = [];
+
+    const MAX_RESULTS = 100;
 
 
     for (
@@ -2254,7 +2306,9 @@ function performSearch() {
     ) {
 
         const book =
-            bible.data[bookIndex];
+            bible.data[
+                bookIndex
+            ];
 
 
         if (
@@ -2271,16 +2325,21 @@ function performSearch() {
 
         for (
             let chapterIndex = 0;
-            chapterIndex < book.chapters.length;
+            chapterIndex <
+                book.chapters.length;
             chapterIndex++
         ) {
 
             const chapter =
-                book.chapters[chapterIndex];
+                book.chapters[
+                    chapterIndex
+                ];
 
 
             if (
-                !Array.isArray(chapter)
+                !Array.isArray(
+                    chapter
+                )
             ) {
 
                 continue;
@@ -2295,18 +2354,22 @@ function performSearch() {
             ) {
 
                 const verse =
-                    chapter[verseIndex];
+                    String(
+                        chapter[
+                            verseIndex
+                        ]
+                    );
 
 
                 if (
                     normalizeText(
                         verse
                     ).includes(
-                        normalizedQuery
+                        search
                     )
                 ) {
 
-                    state.searchResults.push({
+                    results.push({
 
                         bookIndex,
 
@@ -2317,17 +2380,14 @@ function performSearch() {
                         bookName:
                             book.name,
 
-                        reference:
-                            `${book.name} ${chapterIndex + 1}:${verseIndex + 1}`,
-
-                        text:
-                            verse
+                        verse
 
                     });
 
 
                     if (
-                        state.searchResults.length >= 100
+                        results.length >=
+                        MAX_RESULTS
                     ) {
 
                         break;
@@ -2340,7 +2400,8 @@ function performSearch() {
 
 
             if (
-                state.searchResults.length >= 100
+                results.length >=
+                MAX_RESULTS
             ) {
 
                 break;
@@ -2351,7 +2412,8 @@ function performSearch() {
 
 
         if (
-            state.searchResults.length >= 100
+            results.length >=
+            MAX_RESULTS
         ) {
 
             break;
@@ -2361,31 +2423,42 @@ function performSearch() {
     }
 
 
+    state.searchResults =
+        results;
+
+
     render();
 
 }
 
 
 // =====================================================
-// RESULTADOS DE BÚSQUEDA
+// RESULTADOS
 // =====================================================
 
 function renderSearchResults() {
 
-    if (
-        !state.searchResults.length
-    ) {
+    const results =
+        state.searchResults;
+
+
+    if (!results.length) {
 
         return `
 
             <div class="empty-card">
 
+                <div style="font-size:40px;">
+                    🔎
+                </div>
+
                 <h2>
-                    No se encontraron resultados
+                    No encontramos resultados
                 </h2>
 
                 <p>
-                    Intenta con otra palabra.
+                    Intenta con otra palabra
+                    o frase.
                 </p>
 
             </div>
@@ -2397,133 +2470,69 @@ function renderSearchResults() {
 
     return `
 
-        <div class="search-results">
+        <div>
 
-            <p class="results-count">
+            <p style="margin-bottom:12px;">
 
-                ${state.searchResults.length}
-
+                ${results.length}
                 resultado(s)
+
+                ${
+                    results.length === 100
+                        ? ' — se muestran los primeros 100'
+                        : ''
+                }
 
             </p>
 
 
             ${
-
-                state.searchResults
-
+                results
                     .map(
+                        result => `
 
-                        (result, index) => `
-
-                            <button
+                            <div
                                 class="result-card"
-                                data-result="${index}"
+                                data-search-book="${result.bookIndex}"
+                                data-search-chapter="${result.chapterIndex}"
                             >
 
                                 <strong>
 
                                     ${escapeHtml(
-                                        result.reference
+                                        result.bookName
                                     )}
 
+                                    ${
+                                        result.chapterIndex +
+                                        1
+                                    }:${
+                                        result.verseIndex +
+                                        1
+                                    }
+
                                 </strong>
+
 
                                 <p>
 
                                     ${highlightSearch(
-                                        result.text,
+                                        result.verse,
                                         state.searchQuery
                                     )}
 
                                 </p>
 
-                            </button>
+                            </div>
 
                         `
-
                     )
-
                     .join('')
-
             }
 
         </div>
 
     `;
-
-}
-
-
-// =====================================================
-// EVENTOS DE RESULTADOS
-// =====================================================
-
-function bindSearchResults() {
-
-    document
-        .querySelectorAll(
-            '[data-result]'
-        )
-        .forEach(
-
-            element => {
-
-                element.addEventListener(
-
-                    'click',
-
-                    () => {
-
-                        const index =
-                            Number(
-                                element.dataset.result
-                            );
-
-
-                        const result =
-                            state.searchResults[
-                                index
-                            ];
-
-
-                        if (!result) {
-
-                            return;
-
-                        }
-
-
-                        state.bookIndex =
-                            result.bookIndex;
-
-
-                        state.chapterIndex =
-                            result.chapterIndex;
-
-
-                        state.selectedVerses = [
-
-                            result.verseIndex
-
-                        ];
-
-
-                        state.view =
-                            'reader';
-
-
-                        addHistory();
-
-                        render();
-
-                    }
-
-                );
-
-            }
-
-        );
 
 }
 
@@ -2542,13 +2551,17 @@ function renderFavorites(content) {
 
             <div class="empty-card">
 
+                <div style="font-size:40px;">
+                    ⭐
+                </div>
+
                 <h2>
                     No tienes favoritos
                 </h2>
 
                 <p>
-                    Guarda capítulos o versículos
-                    para encontrarlos aquí.
+                    Selecciona versículos o capítulos
+                    para guardarlos aquí.
                 </p>
 
             </div>
@@ -2564,66 +2577,52 @@ function renderFavorites(content) {
 
         <section>
 
-            <div class="page-header">
+            <h1>
+                Favoritos
+            </h1>
 
-                <h1>
-                    Favoritos
-                </h1>
-
-                <p>
-                    Tus capítulos y versículos guardados.
-                </p>
-
-            </div>
+            <p>
+                ${state.favorites.length}
+                elemento(s) guardado(s)
+            </p>
 
 
-            <div class="list">
+            ${
+                state.favorites
+                    .map(
+                        (
+                            item,
+                            index
+                        ) => `
 
-                ${
+                            <div
+                                class="list-card"
+                                data-favorite="${index}"
+                            >
 
-                    state.favorites
+                                <strong>
 
-                        .map(
+                                    ${escapeHtml(
+                                        item.reference
+                                    )}
 
-                            (item, index) => `
+                                </strong>
 
-                                <button
-                                    class="list-card"
-                                    data-favorite="${index}"
-                                >
 
-                                    <strong>
+                                <p>
 
-                                        ${escapeHtml(
-                                            item.reference
-                                        )}
+                                    ${escapeHtml(
+                                        item.text
+                                    )}
 
-                                    </strong>
+                                </p>
 
-                                    <span>
+                            </div>
 
-                                        ${
-                                            item.type ===
-                                            'chapter'
-
-                                                ? 'Capítulo'
-
-                                                : 'Versículo'
-                                        }
-
-                                    </span>
-
-                                </button>
-
-                            `
-
-                        )
-
-                        .join('')
-
-                }
-
-            </div>
+                        `
+                    )
+                    .join('')
+            }
 
         </section>
 
@@ -2635,18 +2634,16 @@ function renderFavorites(content) {
             '[data-favorite]'
         )
         .forEach(
-
             element => {
 
                 element.addEventListener(
-
                     'click',
-
                     () => {
 
                         const index =
                             Number(
-                                element.dataset.favorite
+                                element.dataset
+                                    .favorite
                             );
 
 
@@ -2671,42 +2668,19 @@ function renderFavorites(content) {
                             item.chapterIndex;
 
 
-                        state.selectedVerses = [];
-
-
-                        if (
-                            item.type === 'verse'
-                        ) {
-
-                            for (
-                                let i =
-                                    item.startVerse;
-                                i <=
-                                    item.endVerse;
-                                i++
-                            ) {
-
-                                state.selectedVerses.push(
-                                    i
-                                );
-
-                            }
-
-                        }
-
-
                         state.view =
                             'reader';
+
+
+                        state.selectedVerses = [];
 
 
                         render();
 
                     }
-
                 );
 
             }
-
         );
 
 }
@@ -2726,13 +2700,17 @@ function renderNotes(content) {
 
             <div class="empty-card">
 
+                <div style="font-size:40px;">
+                    📝
+                </div>
+
                 <h2>
                     No tienes notas
                 </h2>
 
                 <p>
                     Selecciona un versículo
-                    para crear una nota.
+                    y agrega una nota.
                 </p>
 
             </div>
@@ -2748,86 +2726,82 @@ function renderNotes(content) {
 
         <section>
 
-            <div class="page-header">
-
-                <h1>
-                    Notas
-                </h1>
-
-                <p>
-                    Tus anotaciones bíblicas.
-                </p>
-
-            </div>
+            <h1>
+                Notas
+            </h1>
 
 
-            <div class="notes-list">
+            ${
+                state.notes
+                    .map(
+                        (
+                            item,
+                            index
+                        ) => `
 
-                ${
+                            <div
+                                class="note-card"
+                            >
 
-                    state.notes
+                                <strong>
 
-                        .map(
+                                    ${escapeHtml(
+                                        item.reference
+                                    )}
 
-                            (note, index) => `
+                                </strong>
 
-                                <article
-                                    class="note-card"
+
+                                <p>
+
+                                    ${escapeHtml(
+                                        item.note
+                                    )}
+
+                                </p>
+
+
+                                <small>
+
+                                    ${escapeHtml(
+                                        item.text
+                                    )}
+
+                                </small>
+
+
+                                <div
+                                    class="modal-actions"
+                                    style="margin-top:12px;"
                                 >
 
-                                    <strong>
+                                    <button
+                                        class="secondary-button"
+                                        data-note-open="${index}"
+                                    >
 
-                                        ${escapeHtml(
-                                            note.reference
-                                        )}
+                                        Abrir
 
-                                    </strong>
+                                    </button>
 
-                                    <p>
 
-                                        ${escapeHtml(
-                                            note.note
-                                        )}
+                                    <button
+                                        class="secondary-button"
+                                        data-note-delete="${index}"
+                                    >
 
-                                    </p>
+                                        Eliminar
 
-                                    <small>
+                                    </button>
 
-                                        ${formatDate(
-                                            note.date
-                                        )}
+                                </div>
 
-                                    </small>
+                            </div>
 
-                                    <div class="modal-actions">
-
-                                        <button
-                                            class="secondary-button"
-                                            data-note-open="${index}"
-                                        >
-                                            Abrir
-                                        </button>
-
-                                        <button
-                                            class="secondary-button"
-                                            data-note-delete="${index}"
-                                        >
-                                            Eliminar
-                                        </button>
-
-                                    </div>
-
-                                </article>
-
-                            `
-
-                        )
-
-                        .join('')
-
-                }
-
-            </div>
+                        `
+                    )
+                    .join('')
+            }
 
         </section>
 
@@ -2839,28 +2813,26 @@ function renderNotes(content) {
             '[data-note-open]'
         )
         .forEach(
-
             element => {
 
                 element.addEventListener(
-
                     'click',
-
                     () => {
 
                         const index =
                             Number(
-                                element.dataset.noteOpen
+                                element.dataset
+                                    .noteOpen
                             );
 
 
-                        const note =
+                        const item =
                             state.notes[
                                 index
                             ];
 
 
-                        if (!note) {
+                        if (!item) {
 
                             return;
 
@@ -2868,29 +2840,14 @@ function renderNotes(content) {
 
 
                         state.bookIndex =
-                            note.bookIndex;
+                            item.bookIndex;
 
 
                         state.chapterIndex =
-                            note.chapterIndex;
+                            item.chapterIndex;
 
 
                         state.selectedVerses = [];
-
-
-                        for (
-                            let i =
-                                note.startVerse;
-                            i <=
-                                note.endVerse;
-                            i++
-                        ) {
-
-                            state.selectedVerses.push(
-                                i
-                            );
-
-                        }
 
 
                         state.view =
@@ -2900,11 +2857,9 @@ function renderNotes(content) {
                         render();
 
                     }
-
                 );
 
             }
-
         );
 
 
@@ -2913,18 +2868,16 @@ function renderNotes(content) {
             '[data-note-delete]'
         )
         .forEach(
-
             element => {
 
                 element.addEventListener(
-
                     'click',
-
                     () => {
 
                         const index =
                             Number(
-                                element.dataset.noteDelete
+                                element.dataset
+                                    .noteDelete
                             );
 
 
@@ -2938,12 +2891,14 @@ function renderNotes(content) {
 
                         render();
 
-                    }
+                        toast(
+                            'Nota eliminada.'
+                        );
 
+                    }
                 );
 
             }
-
         );
 
 }
@@ -2963,12 +2918,16 @@ function renderHistory(content) {
 
             <div class="empty-card">
 
+                <div style="font-size:40px;">
+                    🕘
+                </div>
+
                 <h2>
-                    Historial vacío
+                    No hay historial
                 </h2>
 
                 <p>
-                    Los capítulos que visites
+                    Los capítulos que leas
                     aparecerán aquí.
                 </p>
 
@@ -2985,29 +2944,25 @@ function renderHistory(content) {
 
         <section>
 
-            <div class="page-header">
-
-                <h1>
-                    Historial
-                </h1>
-
-            </div>
+            <h1>
+                Historial
+            </h1>
 
 
-            <div class="list">
+            ${
+                state.history
+                    .map(
+                        (
+                            item,
+                            index
+                        ) => `
 
-                ${
+                            <div
+                                class="list-row"
+                                data-history="${index}"
+                            >
 
-                    state.history
-
-                        .map(
-
-                            (item, index) => `
-
-                                <button
-                                    class="list-card"
-                                    data-history="${index}"
-                                >
+                                <div>
 
                                     <strong>
 
@@ -3017,25 +2972,28 @@ function renderHistory(content) {
 
                                     </strong>
 
-                                    <span>
+
+                                    <small>
 
                                         ${formatDate(
                                             item.date
                                         )}
 
-                                    </span>
+                                    </small>
 
-                                </button>
+                                </div>
 
-                            `
 
-                        )
+                                <span>
+                                    →
+                                </span>
 
-                        .join('')
+                            </div>
 
-                }
-
-            </div>
+                        `
+                    )
+                    .join('')
+            }
 
         </section>
 
@@ -3047,18 +3005,16 @@ function renderHistory(content) {
             '[data-history]'
         )
         .forEach(
-
             element => {
 
                 element.addEventListener(
-
                     'click',
-
                     () => {
 
                         const index =
                             Number(
-                                element.dataset.history
+                                element.dataset
+                                    .history
                             );
 
 
@@ -3085,6 +3041,7 @@ function renderHistory(content) {
 
                         state.selectedVerses = [];
 
+
                         state.view =
                             'reader';
 
@@ -3092,82 +3049,10 @@ function renderHistory(content) {
                         render();
 
                     }
-
                 );
 
             }
-
         );
-
-}
-
-
-// =====================================================
-// AGREGAR AL HISTORIAL
-// =====================================================
-
-function addHistory() {
-
-    if (
-        !bible ||
-        !bible.data ||
-        !bible.data[state.bookIndex]
-    ) {
-
-        return;
-
-    }
-
-
-    const book =
-        bible.data[
-            state.bookIndex
-        ];
-
-
-    const reference =
-        `${book.name} ${state.chapterIndex + 1}`;
-
-
-    state.history =
-        state.history.filter(
-
-            item =>
-                !(
-                    item.bookIndex ===
-                        state.bookIndex &&
-
-                    item.chapterIndex ===
-                        state.chapterIndex
-                )
-
-        );
-
-
-    state.history.unshift({
-
-        bookIndex:
-            state.bookIndex,
-
-        chapterIndex:
-            state.chapterIndex,
-
-        reference,
-
-        date:
-            new Date().toISOString()
-
-    });
-
-
-    state.history =
-        state.history.slice(
-            0,
-            50
-        );
-
-
-    saveHistory();
 
 }
 
@@ -3182,13 +3067,9 @@ function renderSettings(content) {
 
         <section>
 
-            <div class="page-header">
-
-                <h1>
-                    Configuración
-                </h1>
-
-            </div>
+            <h1>
+                Configuración
+            </h1>
 
 
             <div class="setting-card">
@@ -3196,12 +3077,12 @@ function renderSettings(content) {
                 <div>
 
                     <strong>
-                        Mostrar números de versículo
+                        Mostrar números de versículos
                     </strong>
 
                     <p>
                         Muestra u oculta los números
-                        delante del texto.
+                        delante de cada versículo.
                     </p>
 
                 </div>
@@ -3211,7 +3092,7 @@ function renderSettings(content) {
 
                     <input
                         type="checkbox"
-                        id="showNumbersSwitch"
+                        id="showNumbers"
                         ${
                             state.showNumbers
                                 ? 'checked'
@@ -3235,7 +3116,8 @@ function renderSettings(content) {
                     </strong>
 
                     <p>
-                        Cambia la apariencia de la aplicación.
+                        Cambia la apariencia
+                        de la aplicación.
                     </p>
 
                 </div>
@@ -3245,7 +3127,7 @@ function renderSettings(content) {
 
                     <input
                         type="checkbox"
-                        id="darkModeSwitch"
+                        id="darkMode"
                         ${
                             state.darkMode
                                 ? 'checked'
@@ -3259,6 +3141,26 @@ function renderSettings(content) {
 
             </div>
 
+
+            <div class="setting-card">
+
+                <div>
+
+                    <strong>
+                        Biblia instalada
+                    </strong>
+
+                    <p>
+                        ${
+                            bible.data.length
+                        }
+                        libros disponibles.
+                    </p>
+
+                </div>
+
+            </div>
+
         </section>
 
     `;
@@ -3266,27 +3168,25 @@ function renderSettings(content) {
 
     const showNumbers =
         document.getElementById(
-            'showNumbersSwitch'
+            'showNumbers'
         );
 
 
     if (showNumbers) {
 
         showNumbers.addEventListener(
-
             'change',
-
             () => {
 
                 state.showNumbers =
                     showNumbers.checked;
+
 
                 saveSettings();
 
                 render();
 
             }
-
         );
 
     }
@@ -3294,29 +3194,25 @@ function renderSettings(content) {
 
     const darkMode =
         document.getElementById(
-            'darkModeSwitch'
+            'darkMode'
         );
 
 
     if (darkMode) {
 
         darkMode.addEventListener(
-
             'change',
-
             () => {
 
                 state.darkMode =
                     darkMode.checked;
 
+
                 saveSettings();
 
                 applySettings();
 
-                render();
-
             }
-
         );
 
     }
@@ -3334,33 +3230,32 @@ function renderAbout(content) {
 
         <section>
 
-            <div class="page-header">
-
-                <h1>
-                    Acerca de
-                </h1>
-
-            </div>
-
-
             <div class="empty-card">
 
                 <div style="font-size:50px;">
                     📖
                 </div>
 
-                <h2>
+
+                <h1>
                     Biblia RVR60
-                </h2>
+                </h1>
+
 
                 <p>
-                    Aplicación independiente para
-                    lectura y estudio de la Biblia.
+                    Aplicación bíblica independiente
+                    para lectura, búsqueda,
+                    favoritos y notas.
                 </p>
 
-                <p>
-                    Incluye lectura, búsqueda,
-                    favoritos, notas e historial.
+
+                <p style="margin-top:10px;">
+
+                    ${
+                        bible.data.length
+                    }
+                    libros disponibles.
+
                 </p>
 
             </div>
@@ -3379,14 +3274,11 @@ function renderAbout(content) {
 function normalizeText(text) {
 
     return String(text)
-
         .normalize('NFD')
-
         .replace(
             /[\u0300-\u036f]/g,
             ''
         )
-
         .toLowerCase();
 
 }
@@ -3395,27 +3287,22 @@ function normalizeText(text) {
 function escapeHtml(text) {
 
     return String(text)
-
         .replace(
             /&/g,
             '&amp;'
         )
-
         .replace(
             /</g,
             '&lt;'
         )
-
         .replace(
             />/g,
             '&gt;'
         )
-
         .replace(
             /"/g,
             '&quot;'
         )
-
         .replace(
             /'/g,
             '&#039;'
@@ -3426,7 +3313,7 @@ function escapeHtml(text) {
 
 function escapeRegex(text) {
 
-    return String(text).replace(
+    return text.replace(
         /[.*+?^${}()|[\]\\]/g,
         '\\$&'
     );
@@ -3439,32 +3326,33 @@ function highlightSearch(
     query
 ) {
 
-    const safeText =
+    const escaped =
         escapeHtml(text);
 
 
-    if (!query) {
+    const normalizedQuery =
+        escapeHtml(query);
 
-        return safeText;
+
+    if (!normalizedQuery) {
+
+        return escaped;
 
     }
 
 
-    const safeQuery =
-        escapeRegex(
-            escapeHtml(query)
+    const regex =
+        new RegExp(
+            `(${escapeRegex(
+                normalizedQuery
+            )})`,
+            'gi'
         );
 
 
-    return safeText.replace(
-
-        new RegExp(
-            `(${safeQuery})`,
-            'gi'
-        ),
-
+    return escaped.replace(
+        regex,
         '<mark>$1</mark>'
-
     );
 
 }
@@ -3477,7 +3365,14 @@ function formatDate(date) {
         return new Date(
             date
         ).toLocaleString(
-            'es-MX'
+            'es-MX',
+            {
+                dateStyle:
+                    'short',
+
+                timeStyle:
+                    'short'
+            }
         );
 
     } catch {
@@ -3489,9 +3384,13 @@ function formatDate(date) {
 }
 
 
+// =====================================================
+// TOAST
+// =====================================================
+
 function toast(message) {
 
-    const element =
+    let element =
         document.getElementById(
             'toast'
         );
@@ -3499,7 +3398,23 @@ function toast(message) {
 
     if (!element) {
 
-        return;
+        element =
+            document.createElement(
+                'div'
+            );
+
+
+        element.id =
+            'toast';
+
+
+        element.className =
+            'toast';
+
+
+        document.body.appendChild(
+            element
+        );
 
     }
 
@@ -3514,13 +3429,12 @@ function toast(message) {
 
 
     clearTimeout(
-        toast.timer
+        element._timeout
     );
 
 
-    toast.timer =
+    element._timeout =
         setTimeout(
-
             () => {
 
                 element.classList.remove(
@@ -3528,10 +3442,7 @@ function toast(message) {
                 );
 
             },
-
             2500
-
         );
 
 }
-```
