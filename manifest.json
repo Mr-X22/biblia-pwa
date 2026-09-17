@@ -1,0 +1,10 @@
+{
+  "name": "Biblia RVR60",
+  "short_name": "Biblia",
+  "description": "Sagrada Biblia Reina-Valera 1960 — © 2026 Emanuel Marzano",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F5F7FA",
+  "theme_color": "#3B6FCA",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
