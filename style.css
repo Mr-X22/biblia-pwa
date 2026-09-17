@@ -101,7 +101,7 @@ input, textarea, select { font-family: inherit; }
 
 /* ── CONTENT ── */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-.content { flex: 1; overflow-y: auto; padding: 20px; }
+.content { flex: 1; overflow-y: auto; padding: 14px 16px; }
 
 /* ── BREADCRUMB ── */
 .breadcrumb {
@@ -117,21 +117,21 @@ input, textarea, select { font-family: inherit; }
 
 /* ── BOOK GRID ── */
 .section-title {
-  font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
-  color: var(--text-faint); font-weight: 700; margin-bottom: 8px; margin-top: 16px;
+  font-size: 10px; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text-faint); font-weight: 700; margin-bottom: 4px; margin-top: 10px;
 }
 .section-title:first-child { margin-top: 0; }
-.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 6px; margin-bottom: 6px; }
+.book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(62px, 1fr)); gap: 4px; margin-bottom: 4px; }
 .book-btn {
-  height: 60px; border-radius: 8px; border: 1.5px solid var(--border);
+  height: 50px; border-radius: 7px; border: 1.5px solid var(--border);
   background: var(--panel); display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 2px;
-  cursor: pointer; transition: all .12s; padding: 4px;
+  align-items: center; justify-content: center; gap: 1px;
+  cursor: pointer; transition: all .12s; padding: 3px;
 }
 .book-btn:hover { border-color: var(--accent); background: var(--accent-light); }
 .book-btn.active { border-color: var(--accent); background: var(--accent-light); }
-.book-abbr { font-size: 15px; font-weight: 800; color: var(--accent); }
-.book-name-sm { font-size: 9px; color: var(--text-muted); text-align: center; line-height: 1.2; }
+.book-abbr { font-size: 13px; font-weight: 800; color: var(--accent); }
+.book-name-sm { font-size: 8px; color: var(--text-muted); text-align: center; line-height: 1.2; }
 
 /* ── CHAPTER GRID ── */
 .chap-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); gap: 6px; }
@@ -248,6 +248,25 @@ input, textarea, select { font-family: inherit; }
 .toggle.on { background: var(--accent); }
 .toggle::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: #fff; top: 3px; left: 3px; transition: left .2s; }
 .toggle.on::after { left: 23px; }
+
+/* ── ÍNDICE ── */
+.index-section { margin-bottom: 16px; }
+.index-section-title {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--text-faint); font-weight: 700; padding: 6px 0 4px;
+  border-bottom: 1px solid var(--border-soft); margin-bottom: 4px;
+}
+.index-table { width: 100%; border-collapse: collapse; }
+.index-table tr { cursor: pointer; border-radius: 6px; }
+.index-table tr:hover td { background: var(--accent-light); }
+.index-table td { padding: 6px 8px; font-size: 13px; }
+.index-table td:first-child { font-weight: 600; color: var(--text); width: 70%; border-radius: 6px 0 0 6px; }
+.index-table td:last-child { color: var(--text-muted); font-size: 12px; text-align: right; border-radius: 0 6px 6px 0; }
+.index-nt-label {
+  text-align: center; font-size: 12px; font-weight: 700;
+  color: var(--accent); background: var(--accent-light);
+  border-radius: 8px; padding: 8px; margin: 16px 0 10px;
+}
 
 /* ── EMPTY STATE ── */
 .empty-state { text-align: center; padding: 60px 20px; color: var(--text-faint); }

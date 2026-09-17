@@ -128,6 +128,7 @@ function renderSection(section) {
     favoritos: ['Favoritos', 'Versículos guardados'],
     notas: ['Notas', 'Tus anotaciones personales'],
     historial: ['Historial', 'Lecturas recientes'],
+    indice: ['Índice', '66 libros — AT y NT'],
     config: ['Configuración', 'Preferencias de la app'],
     acerca: ['Acerca de', 'Información de la aplicación'],
   };
@@ -141,6 +142,7 @@ function renderSection(section) {
   else if (section === 'favoritos') renderFavoritos();
   else if (section === 'notas') renderNotas();
   else if (section === 'historial') renderHistorial();
+  else if (section === 'indice') renderIndice();
   else if (section === 'config') renderConfig();
   else if (section === 'acerca') renderAcerca();
 }
@@ -554,6 +556,56 @@ function clearAll() {
   ['bible_favs','bible_notes','bible_hist'].forEach(k => localStorage.removeItem(k));
   toast('Datos eliminados');
   renderConfig();
+}
+
+// ── ÍNDICE ──
+const INDEX_SECTIONS = [
+  { label:'Pentateuco — AT', from:0, to:4 },
+  { label:'Históricos — AT', from:5, to:16 },
+  { label:'Poéticos — AT', from:17, to:21 },
+  { label:'Profetas Mayores — AT', from:22, to:26 },
+  { label:'Profetas Menores — AT', from:27, to:38 },
+  { label:'Evangelios — NT', from:39, to:42 },
+  { label:'Hechos — NT', from:43, to:43 },
+  { label:'Epístolas Paulinas — NT', from:44, to:56 },
+  { label:'Epístolas Generales — NT', from:57, to:64 },
+  { label:'Apocalipsis — NT', from:65, to:65 },
+];
+
+function renderIndice() {
+  const bible = state.bible;
+  let html = '<div class="content">';
+  html += '<p style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Toca un libro para ir directamente a él.</p>';
+
+  INDEX_SECTIONS.forEach((sec, si) => {
+    // Separador AT/NT
+    if (si === 5) html += '<div class="index-nt-label">✦ Nuevo Testamento ✦</div>';
+    if (si === 0) html += '<div class="index-nt-label" style="margin-top:0;">✦ Antiguo Testamento ✦</div>';
+
+    html += `<div class="index-section">
+      <div class="index-section-title">${esc(sec.label.split(' — ')[0])}</div>
+      <table class="index-table">`;
+
+    for (let i = sec.from; i <= sec.to; i++) {
+      const book = bible[i];
+      const chaps = book.chapters.length;
+      html += `<tr onclick="goToBookFromIndex(${i})">
+        <td>${esc(book.name)}</td>
+        <td>${chaps} cap.</td>
+      </tr>`;
+    }
+    html += '</table></div>';
+  });
+
+  html += '</div>';
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function goToBookFromIndex(i) {
+  state.bookIndex = i;
+  state.chapterIndex = 0;
+  state.verseStep = 'chapters';
+  renderSection('leer');
 }
 
 // ── ACERCA DE ──
